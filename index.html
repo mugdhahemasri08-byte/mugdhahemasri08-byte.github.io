@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GenAI Engineer — Portfolio</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --accent: #2563eb; /* cool blue */
+      --muted: #6b7280;
+      --card-shadow: 0 6px 18px rgba(15,23,42,0.06);
+      color-scheme: light;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    html,body{height:100%;}
+    body{
+      background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* NAV */
+    .navbar-brand{font-weight:700; letter-spacing: -0.2px}
+    .nav-link{color:var(--muted) !important}
+    .nav-link.active{color:var(--accent) !important; font-weight:600}
+
+    /* Hero */
+    .hero{
+      padding: 6rem 0 4rem;
+    }
+    .hero .eyebrow{font-weight:600; color:var(--accent)}
+    .hero h1{font-size:2.25rem; font-weight:800; line-height:1.05}
+    .typewriter{color:var(--accent)}
+
+    /* Cards */
+    .card{border:0; border-radius:16px; box-shadow:var(--card-shadow)}
+    .project-img{height:160px; object-fit:cover; border-top-left-radius:16px; border-top-right-radius:16px}
+
+    /* Skills */
+    .skill-name{font-weight:600}
+
+    /* Section spacing */
+    section{padding:4rem 0}
+
+    /* Footer */
+    footer{padding:2rem 0; color:var(--muted)}
+
+    /* subtle animations */
+    .reveal{opacity:0; transform:translateY(12px); transition:all .65s cubic-bezier(.2,.9,.3,1)}
+    .reveal.visible{opacity:1; transform:none}
+
+    @media(min-width:992px){
+      .hero h1{font-size:3.25rem}
+    }
+  </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="100" tabindex="0">
+
+  <!-- NAVBAR -->
+  <nav id="mainNav" class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="#">GenAI Engineer</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navCollapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+        <a class="btn btn-outline-primary ms-3 d-none d-lg-inline-flex" href="#contact"><i class="bi bi-envelope-fill me-2"></i>Hire me</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="home" class="hero">
+    <div class="container">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-7">
+          <p class="eyebrow reveal">AI · ML · Product · Infrastructure</p>
+          <h1 class="reveal">Hi — I'm <span class="typewriter">A GenAI Engineer</span><br class="d-none d-md-block"> building modern AI products.</h1>
+          <p class="lead mt-3 reveal">I design, prototype and productionize gen‑AI systems: model integration, prompt engineering, data pipelines, and scalable deployment. I turn research ideas into usable products.</p>
+
+          <div class="mt-4 reveal">
+            <a href="#projects" class="btn btn-primary btn-lg me-2">View projects</a>
+            <a href="#contact" class="btn btn-outline-secondary btn-lg">Get in touch</a>
+          </div>
+
+          <div class="row mt-5 g-3">
+            <div class="col-6 col-md-4 reveal">
+              <div class="card p-3">
+                <div class="d-flex align-items-center">
+                  <div class="me-3 bg-light rounded-circle p-3"><i class="bi bi-gear-fill fs-4 text-primary"></i></div>
+                  <div>
+                    <div class="text-muted small">Focus</div>
+                    <div class="fw-bold">Prompt Engineering</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 reveal">
+              <div class="card p-3">
+                <div class="d-flex align-items-center">
+                  <div class="me-3 bg-light rounded-circle p-3"><i class="bi bi-cloud-upload-fill fs-4 text-primary"></i></div>
+                  <div>
+                    <div class="text-muted small">Scale</div>
+                    <div class="fw-bold">Model Ops</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4 reveal">
+              <div class="card p-3">
+                <div class="d-flex align-items-center">
+                  <div class="me-3 bg-light rounded-circle p-3"><i class="bi bi-bar-chart-fill fs-4 text-primary"></i></div>
+                  <div>
+                    <div class="text-muted small">Impact</div>
+                    <div class="fw-bold">Productization</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-lg-5 text-center">
+          <div class="card p-3">
+            <img src="https://images.unsplash.com/photo-1542831371-d531d36971e6?auto=format&fit=crop&w=900&q=60" class="project-img" alt="profile">
+            <div class="card-body text-start">
+              <h5 class="card-title mb-1">Let's build useful AI</h5>
+              <p class="text-muted small mb-2">Model-first engineering, observability, and safe deployment.</p>
+              <div class="d-flex gap-2 flex-wrap">
+                <a class="btn btn-sm btn-outline-primary" href="#projects">Portfolio</a>
+                <a class="btn btn-sm btn-outline-secondary" href="#about">Resume</a>
+                <a class="btn btn-sm btn-primary" href="#contact">Contact</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 reveal">
+          <h3>About me</h3>
+          <p class="text-muted">I craft production-ready generative AI experiences. My background blends applied ML, software engineering, and product design. I focus on building scalable, robust systems that make models useful in real products.</p>
+
+          <ul class="list-unstyled">
+            <li><strong>Location:</strong> Remote / Available for hire</li>
+            <li><strong>Email:</strong> <a href="mailto:youremail@example.com">youremail@example.com</a></li>
+            <li><strong>Resume:</strong> <a href="#" download>Download PDF</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-6 reveal">
+          <div class="card p-4">
+            <h6 class="text-muted">Core strengths</h6>
+            <div class="mt-3">
+              <div class="mb-3">
+                <div class="d-flex justify-content-between"><div class="skill-name">Prompt Design</div><div class="text-muted">95%</div></div>
+                <div class="progress" style="height:8px"><div class="progress-bar" role="progressbar" style="width:95%"></div></div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between"><div class="skill-name">Model Integration</div><div class="text-muted">88%</div></div>
+                <div class="progress" style="height:8px"><div class="progress-bar" role="progressbar" style="width:88%"></div></div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between"><div class="skill-name">MLOps</div><div class="text-muted">82%</div></div>
+                <div class="progress" style="height:8px"><div class="progress-bar" role="progressbar" style="width:82%"></div></div>
+              </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+              <a href="#projects" class="btn btn-outline-primary">See work</a>
+              <a href="#contact" class="btn btn-primary">Let's talk</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="bg-white">
+    <div class="container">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-4 reveal">
+          <h4>Technical stack</h4>
+          <p class="text-muted">Languages, frameworks and tools I use frequently.</p>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <span class="badge bg-light border">Python</span>
+            <span class="badge bg-light border">PyTorch</span>
+            <span class="badge bg-light border">TensorFlow</span>
+            <span class="badge bg-light border">LangChain</span>
+            <span class="badge bg-light border">FastAPI</span>
+            <span class="badge bg-light border">Docker</span>
+            <span class="badge bg-light border">Kubernetes</span>
+            <span class="badge bg-light border">AWS / GCP</span>
+          </div>
+        </div>
+        <div class="col-lg-8 reveal">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <div class="card p-3 h-100">
+                <h6 class="mb-2">Generative Products</h6>
+                <p class="text-muted small">Designing conversation flows, retrieval-augmented generation, and multimodal pipelines.</p>
+                <div class="mt-auto text-end"><span class="text-muted small">Case studies: 3</span></div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card p-3 h-100">
+                <h6 class="mb-2">Model Ops</h6>
+                <p class="text-muted small">Serving, monitoring and scaling models with observability and cost controls.</p>
+                <div class="mt-auto text-end"><span class="text-muted small">Deployments: 10+</span></div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card p-3 h-100">
+                <h6 class="mb-2">Data Pipelines</h6>
+                <p class="text-muted small">ETL for training data, human feedback loops and annotation tooling.</p>
+                <div class="mt-auto text-end"><span class="text-muted small">Scale: 100k+ records</span></div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card p-3 h-100">
+                <h6 class="mb-2">Safety & Evaluation</h6>
+                <p class="text-muted small">Automated evaluation, guardrails and red-team processes.</p>
+                <div class="mt-auto text-end"><span class="text-muted small">Frameworks: custom</span></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center mb-4 reveal">
+        <h3>Selected projects</h3>
+        <div class="text-muted small">Featured — production & prototypes</div>
+      </div>
+
+      <div class="row g-4">
+
+        <!-- Project 1 -->
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981d?auto=format&fit=crop&w=900&q=60" class="project-img" alt="project">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">RAG Document Assistant</h5>
+              <p class="card-text text-muted small">Retrieval-augmented generation assistant with context-aware answers and fallback safety layer.</p>
+              <div class="mt-auto d-flex justify-content-between align-items-center">
+                <div class="text-muted small">Python · Elasticsearch · LangChain</div>
+                <div>
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#proj1">Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=60" class="project-img" alt="project">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Code Synthesis Platform</h5>
+              <p class="card-text text-muted small">AI-assisted code generation with testing harness and CI integration.</p>
+              <div class="mt-auto d-flex justify-content-between align-items-center">
+                <div class="text-muted small">Node · OpenAI · CI</div>
+                <div>
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#proj2">Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=60" class="project-img" alt="project">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Multimodal Search</h5>
+              <p class="card-text text-muted small">Image + text retrieval system with vector database and UI for interactive exploration.</p>
+              <div class="mt-auto d-flex justify-content-between align-items-center">
+                <div class="text-muted small">CLIP · FAISS · React</div>
+                <div>
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#proj3">Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-5 reveal">
+        <a class="btn btn-outline-primary" href="#">View all projects</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Modals -->
+  <div class="modal fade" id="proj1" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">RAG Document Assistant</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted">Built a retrieval-augmented generation assistant that indexes documents and answers queries with citations. Implemented vector store, chunking, prompt templates, and safety filters.</p>
+          <ul>
+            <li>Indexing pipeline with embedding generation and timely reindexing.</li>
+            <li>Citation-aware response formatting and context window management.</li>
+            <li>Monitoring for hallucination rate and user feedback loop.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="proj2" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Code Synthesis Platform</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted">An internal tool for generating code snippets and verifying them through unit-test scaffolding. Focused on safety, reproducibility and seamless CI/CD integration.</p>
+          <ul>
+            <li>Prompt templates and test-first generation.</li>
+            <li>Automated result validation and sandboxing.</li>
+            <li>Integration with Git-based workflows for review and deployment.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="proj3" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Multimodal Search</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted">Search system combining image and text embeddings to retrieve relevant assets. Built scalable vector search & UI with filtering and similarity tuning.</p>
+          <ul>
+            <li>Vector index pruning and ANN for latency control.</li>
+            <li>UI for feedback collection and results re-ranking.</li>
+            <li>Data drift monitoring for embeddings quality.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact" class="bg-light">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 reveal">
+          <h3>Work with me</h3>
+          <p class="text-muted">I take on projects where generative AI moves the needle. Tell me about your problem, constraints and timeline.</p>
+
+          <ul class="list-unstyled">
+            <li><i class="bi bi-geo-alt-fill me-2"></i>Remote</li>
+            <li><i class="bi bi-envelope-fill me-2"></i><a href="mailto:youremail@example.com">youremail@example.com</a></li>
+            <li><i class="bi bi-phone-fill me-2"></i>+1 (555) 555-5555</li>
+          </ul>
+        </div>
+
+        <div class="col-lg-6 reveal">
+          <div class="card p-4">
+            <form id="contactForm">
+              <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input class="form-control" type="text" id="name" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input class="form-control" type="email" id="email" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Message</label>
+                <textarea class="form-control" id="message" rows="4" required></textarea>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-primary" type="submit">Send message</button>
+                <div id="contactResult" class="text-muted small"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-white">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="small">© <span id="year"></span> GenAI Engineer — Built with Bootstrap</div>
+      <div>
+        <a class="text-muted me-3" href="#"><i class="bi bi-linkedin"></i></a>
+        <a class="text-muted me-3" href="#"><i class="bi bi-github"></i></a>
+        <a class="text-muted" href="#"><i class="bi bi-twitter"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // small helpers: reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, {threshold: .12});
+    revealEls.forEach(el => io.observe(el));
+
+    // typed effect for hero title
+    const typedEl = document.querySelector('.typewriter');
+    const phrases = ['A GenAI Engineer', 'Prompt Engineer', 'Model Ops Lead', 'Product-minded Engineer'];
+    let pi = 0, ci = 0, forward = true;
+    function tick(){
+      const p = phrases[pi];
+      if(forward){
+        typedEl.textContent = p.slice(0, ++ci);
+        if(ci === p.length){ forward = false; setTimeout(tick, 1200); return }
+      } else {
+        typedEl.textContent = p.slice(0, --ci);
+        if(ci === 0){ forward = true; pi = (pi+1) % phrases.length }
+      }
+      setTimeout(tick, forward ? 80 : 30);
+    }
+    if(typedEl) tick();
+
+    // contact form (simple client-side demo)
+    const form = document.getElementById('contactForm');
+    const result = document.getElementById('contactResult');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      // simulate submission — replace with real API or form handler
+      result.textContent = 'Sending...';
+      setTimeout(() => {
+        result.textContent = 'Message sent — thanks, ' + name + '!';
+        form.reset();
+      }, 900);
+    });
+
+    // set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // highlight nav on scroll (bootstrap scrollspy will do most, but ensure active states after a click)
+    document.querySelectorAll('#mainNav .nav-link').forEach(a => {
+      a.addEventListener('click', () => {
+        document.querySelectorAll('#mainNav .nav-link').forEach(x => x.classList.remove('active'));
+        a.classList.add('active');
+      })
+    });
+  </script>
+</body>
+</html>
