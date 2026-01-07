@@ -14,7 +14,7 @@
 
   <style>
     :root{
-      --accent:#BC8F8F;          /* Rosy Brown */
+      --accent:#BC8F8F;
       --accent-dark:#A77474;
       --soft-bg:#F7EEEE;
       --muted:#7A6A6A;
@@ -27,19 +27,16 @@
       color:#3b2f2f;
     }
 
-    /* NAV */
     .navbar{background:#fff}
     .navbar-brand{font-weight:700}
     .nav-link{color:var(--muted)!important}
     .nav-link.active{color:var(--accent-dark)!important;font-weight:600}
 
-    /* HERO */
     .hero{padding:6rem 0 4rem}
     .eyebrow{color:var(--accent);font-weight:600}
     .hero h1{font-weight:800}
     .typewriter{color:var(--accent-dark)}
 
-    /* BUTTONS */
     .btn-primary{
       background:var(--accent);
       border-color:var(--accent);
@@ -57,32 +54,25 @@
       color:#fff;
     }
 
-    /* CARDS */
     .card{
       border:0;
       border-radius:16px;
       box-shadow:var(--card-shadow);
     }
+
     .project-img{
       height:160px;
       object-fit:cover;
       border-radius:16px 16px 0 0;
     }
 
-    /* PROGRESS */
     .progress-bar{background:var(--accent)}
-
-    /* SECTIONS */
     section{padding:4rem 0}
-
-    /* CONTACT */
     #contact{background:var(--soft-bg)}
 
-    /* FOOTER */
     footer{color:var(--muted)}
     footer i:hover{color:var(--accent-dark)}
 
-    /* REVEAL */
     .reveal{
       opacity:0;
       transform:translateY(12px);
@@ -95,6 +85,94 @@
 
     @media(min-width:992px){
       .hero h1{font-size:3.2rem}
+    }
+
+    /* ================= CHAT ADD-ON ================= */
+    .chat-btn{
+      position:fixed;
+      bottom:24px;
+      right:24px;
+      background:var(--accent);
+      color:#fff;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      border:none;
+      font-size:22px;
+      box-shadow:var(--card-shadow);
+      z-index:9999;
+    }
+
+    .chat-box{
+      position:fixed;
+      bottom:90px;
+      right:24px;
+      width:320px;
+      background:#fff;
+      border-radius:16px;
+      box-shadow:var(--card-shadow);
+      display:none;
+      flex-direction:column;
+      overflow:hidden;
+      z-index:9999;
+    }
+
+    .chat-header{
+      background:var(--accent);
+      color:#fff;
+      padding:12px 16px;
+      font-weight:600;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .chat-header span{cursor:pointer}
+
+    .chat-body{
+      padding:12px;
+      height:260px;
+      overflow-y:auto;
+      background:#fafafa;
+      font-size:14px;
+    }
+
+    .chat-msg{
+      margin-bottom:10px;
+      max-width:85%;
+      padding:8px 12px;
+      border-radius:12px;
+      line-height:1.4;
+    }
+
+    .chat-msg.user{
+      background:var(--accent);
+      color:#fff;
+      margin-left:auto;
+    }
+
+    .chat-msg.bot{
+      background:#eee6e6;
+    }
+
+    .chat-input{
+      display:flex;
+      border-top:1px solid #eee;
+    }
+
+    .chat-input input{
+      flex:1;
+      border:none;
+      padding:10px;
+      outline:none;
+      font-size:14px;
+    }
+
+    .chat-input button{
+      border:none;
+      background:var(--accent);
+      color:#fff;
+      padding:0 16px;
     }
   </style>
 </head>
@@ -277,8 +355,34 @@
   </div>
 </footer>
 
+<!-- CHAT ADD-ON -->
+<button class="chat-btn" id="chatBtn">
+  <i class="bi bi-chat-dots"></i>
+</button>
+
+<div class="chat-box" id="chatBox">
+  <div class="chat-header">
+    AI Assistant
+    <span id="closeChat">✕</span>
+  </div>
+
+  <div class="chat-body" id="chatBody">
+    <div class="chat-msg bot">
+      Hi 👋 I'm Hema Sri, what would you like to know about me
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input id="chatInput" placeholder="Type a message..." />
+    <button id="sendBtn">
+      <i class="bi bi-send"></i>
+    </button>
+  </div>
+</div>
+
 <!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -298,6 +402,54 @@
     if(c===0){f=true;w=(w+1)%words.length}
     setTimeout(type,f?80:40);
   })();
+</script>
+
+<script>
+  const BACKEND_URL = "https://chat-backend-n8t7.onrender.com//api/ask";
+
+  const chatBtn = document.getElementById("chatBtn");
+  const chatBox = document.getElementById("chatBox");
+  const closeChat = document.getElementById("closeChat");
+  const sendBtn = document.getElementById("sendBtn");
+  const chatInput = document.getElementById("chatInput");
+  const chatBody = document.getElementById("chatBody");
+
+  chatBtn.onclick = () => chatBox.style.display = "flex";
+  closeChat.onclick = () => chatBox.style.display = "none";
+
+  sendBtn.onclick = sendMessage;
+  chatInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") sendMessage();
+  });
+
+  function addMessage(text, type){
+    const msg = document.createElement("div");
+    msg.className = `chat-msg ${type}`;
+    msg.textContent = text;
+    chatBody.appendChild(msg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  async function sendMessage(){
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    addMessage(message, "user");
+    chatInput.value = "";
+
+    try {
+      const res = await fetch(BACKEND_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: message })
+      });
+
+      const data = await res.json();
+      addMessage(data.response || "No response", "bot");
+    } catch (err) {
+      addMessage("⚠️ Backend not reachable", "bot");
+    }
+  }
 </script>
 
 </body>
