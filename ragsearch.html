@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>WEB SEARCH</title>
+  <title>RAG SEARCH</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Google Font -->
@@ -123,17 +123,17 @@
 <div class="app-container">
 
   <div class="header">
-    <h1>AI Web Q&A</h1>
-    <p>Ask questions powered by live web search</p>
+    <h1>RAG SEARCH</h1>
+    <p>Ask questions powered by RAG (Retrieval-Augmented Generation) with BSE company data</p>
   </div>
 
   <textarea
     id="question"
     rows="4"
-    placeholder="Ask anything... (e.g. How is RaajaSaab movie?)"
+    placeholder="This Rag is trained with 5 companies bse data. Ask me questions related to bse listed companies..."
   ></textarea>
 
-  <button id="searchBtn" onclick="websearch()">WebSearch</button>
+  <button id="searchBtn" onclick="websearch()">Ask</button>
 
   <div class="output" id="output">
     Answer will appear here ✨
