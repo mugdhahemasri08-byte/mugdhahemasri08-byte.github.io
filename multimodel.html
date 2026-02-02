@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Multimodal AI Q&A</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #bc8f8f;
+      --primary-light: #f4eaea;
+      --primary-soft: #ead7d7;
+      --text-dark: #2f2f2f;
+      --text-light: #6f6f6f;
+      --white: #ffffff;
+      --success-bg: #e8f7ef;
+      --success-text: #2f7a55;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary-soft));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 780px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 22px;
+      padding: 36px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: var(--primary);
+    }
+
+    .header p {
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 25px;
+      border-radius: 30px;
+      background: var(--primary-light);
+      overflow: hidden;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dark);
+      transition: 0.3s;
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, var(--primary), #a57878);
+      color: white;
+    }
+
+    .content { display: none; }
+    .content.active { display: block; }
+
+    .upload-section {
+      background: var(--primary-light);
+      border: 2px dashed var(--primary);
+      border-radius: 16px;
+      padding: 26px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    input[type="file"] { display: none; }
+
+    .upload-label {
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--primary);
+    }
+
+    .upload-status {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 13px;
+      padding: 8px;
+      border-radius: 20px;
+      background: #f5f5f5;
+      color: #888;
+    }
+
+    .upload-status.success {
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .preview {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 15px;
+    }
+
+    .preview img,
+    .preview video {
+      max-width: 100%;
+      max-height: 260px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    textarea {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid #ddd;
+      resize: none;
+      font-size: 14px;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 35px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), #a57878);
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(188,143,143,0.4);
+    }
+
+    .output {
+      margin-top: 25px;
+      background: var(--primary-light);
+      padding: 20px;
+      border-radius: 18px;
+      font-size: 14px;
+      white-space: pre-wrap;
+      min-height: 100px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .footer span {
+      color: var(--primary);
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+  <div class="header">
+    <h1>Multimodal AI Q&A</h1>
+    <p>Ask questions from images or documents</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('image')">🖼 Image Q&A</div>
+    <div class="tab" onclick="switchTab('pdf')">📄 PDF Q&A</div>
+    <div class="tab" onclick="switchTab('video')">🎥 Video Q&A</div>
+  </div>
+
+  <!-- IMAGE TAB -->
+  <div class="content active" id="image">
+    <div class="upload-section">
+      <label class="upload-label">
+        Upload Image
+        <input type="file" id="imageFile" accept="image/*">
+      </label>
+    </div>
+
+    <div class="upload-status" id="imageStatus">No image uploaded</div>
+    <div class="preview" id="imagePreview"></div>
+
+    <textarea id="imageQuestion" placeholder="Ask a question about the image..."></textarea>
+    <button onclick="askImage()">Ask</button>
+
+    <div class="output" id="imageOutput">Answer will appear here ✨</div>
+  </div>
+
+  <!-- PDF TAB -->
+  <div class="content" id="pdf">
+    <div class="upload-section">
+      <label class="upload-label">
+        Upload PDF
+        <input type="file" id="pdfFile" accept="application/pdf">
+      </label>
+    </div>
+
+    <div class="upload-status" id="pdfStatus">No PDF uploaded</div>
+
+    <textarea id="pdfQuestion" placeholder="Ask a question from the document..."></textarea>
+    <button onclick="askPDF()">Ask</button>
+
+    <div class="output" id="pdfOutput">Answer will appear here ✨</div>
+  </div>
+
+  <!-- VIDEO TAB -->
+  <div class="content" id="video">
+    <div class="upload-section">
+      <label class="upload-label">
+        Upload Video
+        <input type="file" id="videoFile" accept="video/*">
+      </label>
+    </div>
+
+    <div class="upload-status" id="videoStatus">No video uploaded</div>
+
+    <input
+      type="text"
+      id="youtubeUrl"
+      placeholder="Paste YouTube video URL here..."
+      style="width:100%; margin-top:12px; padding:12px; border-radius:14px; border:1px solid #ddd; font-size:14px;"
+    />
+
+    <div class="preview" id="videoPreview"></div>
+
+    <textarea id="videoQuestion" placeholder="Ask a question about the video..."></textarea>
+
+    <button onclick="askVideo()">Ask from Uploaded Video</button>
+    <button onclick="askYouTube()">Ask from YouTube</button>
+
+    <div class="output" id="videoOutput">Answer will appear here ✨</div>
+  </div>
+
+  <div class="footer">
+    Developed by <span>Hema</span> • AI Question Answering System
+  </div>
+
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".content").forEach(c => c.classList.remove("active"));
+
+  document.querySelector(`.tab[onclick*="${tab}"]`).classList.add("active");
+  document.getElementById(tab).classList.add("active");
+}
+
+imageFile.onchange = () => {
+  const file = imageFile.files[0];
+  if (!file) return;
+  imageStatus.textContent = `✔ ${file.name}`;
+  imageStatus.classList.add("success");
+
+  const reader = new FileReader();
+  reader.onload = () => imagePreview.innerHTML = `<img src="${reader.result}">`;
+  reader.readAsDataURL(file);
+};
+
+async function askImage() {
+  if (!imageFile.files[0] || !imageQuestion.value)
+    return alert("Upload image and ask a question");
+
+  imageOutput.innerText = "Analyzing image...";
+  const fd = new FormData();
+  fd.append("image", imageFile.files[0]);
+  fd.append("question", imageQuestion.value);
+
+  const res = await fetch("http://localhost:5000/api/image-chat", {
+    method: "POST",
+    body: fd
+  });
+  const data = await res.json();
+  imageOutput.innerText = data.answer;
+}
+
+pdfFile.onchange = () => {
+  const file = pdfFile.files[0];
+  if (!file) return;
+  pdfStatus.textContent = `✔ ${file.name}`;
+  pdfStatus.classList.add("success");
+};
+
+async function askPDF() {
+  if (!pdfFile.files[0] || !pdfQuestion.value)
+    return alert("Upload PDF and ask a question");
+
+  pdfOutput.innerText = "Reading document...";
+  const fd = new FormData();
+  fd.append("pdf", pdfFile.files[0]);
+  fd.append("question", pdfQuestion.value);
+
+  const res = await fetch("http://localhost:5000/api/chat", {
+    method: "POST",
+    body: fd
+  });
+  const data = await res.json();
+  pdfOutput.innerText = data.answer;
+}
+
+videoFile.onchange = () => {
+  const file = videoFile.files[0];
+  if (!file) return;
+
+  videoStatus.textContent = `✔ ${file.name}`;
+  videoStatus.classList.add("success");
+
+  const url = URL.createObjectURL(file);
+  videoPreview.innerHTML = `<video controls><source src="${url}"></video>`;
+};
+
+async function askVideo() {
+  if (!videoFile.files[0] || !videoQuestion.value)
+    return alert("Upload video and ask a question");
+
+  videoOutput.innerText = "Analyzing video...";
+  const fd = new FormData();
+  fd.append("video", videoFile.files[0]);
+  fd.append("question", videoQuestion.value);
+
+  const res = await fetch("http://localhost:5000/api/video-chat", {
+    method: "POST",
+    body: fd
+  });
+  const data = await res.json();
+  videoOutput.innerText = data.answer;
+}
+
+async function askYouTube() {
+  const youtubeUrl = document.getElementById("youtubeUrl").value;
+  const question = document.getElementById("videoQuestion").value;
+
+  if (!youtubeUrl || !question)
+    return alert("Paste YouTube URL and ask a question");
+
+  videoOutput.innerText = "Analyzing YouTube video...";
+  const fd = new FormData();
+  fd.append("youtube_url", youtubeUrl);
+  fd.append("question", question);
+
+  const res = await fetch("http://localhost:5000/api/youtube-chat", {
+    method: "POST",
+    body: fd
+  });
+  const data = await res.json();
+  videoOutput.innerText = data.answer;
+}
+</script>
+
+</body>
+</html>
