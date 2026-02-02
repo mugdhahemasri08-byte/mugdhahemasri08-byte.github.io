@@ -101,6 +101,7 @@
       white-space: pre-wrap;
       min-height: 120px;
       color: var(--text-dark);
+      overflow-x: auto;
     }
 
     .footer {
@@ -132,7 +133,7 @@
     placeholder="Ask anything... (e.g. How is RaajaSaab movie?)"
   ></textarea>
 
-  <button onclick="websearch()">WebSearch</button>
+  <button id="searchBtn" onclick="websearch()">WebSearch</button>
 
   <div class="output" id="output">
     Answer will appear here ✨
@@ -144,34 +145,73 @@
 
 </div>
 
+<!-- ✅ IMPORTANT: Load config first -->
+<script src="config.js"></script>
+
 <script>
-async function websearch() {
-  const question = document.getElementById("question").value.trim();
-  const output = document.getElementById("output");
+  async function websearch() {
+    const question = document.getElementById("question").value.trim();
+    const output = document.getElementById("output");
+    const btn = document.getElementById("searchBtn");
 
-  if (!question) {
-    alert("Please enter a question");
-    return;
+    if (!question) {
+      alert("Please enter a question");
+      return;
+    }
+
+    output.innerText = "Thinking... 🤔";
+    btn.disabled = true;
+    btn.innerText = "Searching...";
+
+    try {
+      const res = await fetch(API_URLS.WEBSEARCH, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+
+        // ✅ send both keys to avoid backend mismatch
+        body: JSON.stringify({
+          prompt: question,
+          question: question
+        })
+      });
+
+      // ✅ Always read raw text first
+      const text = await res.text();
+
+      // ✅ Try parse JSON
+      try {
+        const data = JSON.parse(text);
+
+        if (!res.ok) {
+          output.innerText =
+            `❌ Backend Error (HTTP ${res.status})\n\n` +
+            (data.error || data.message || text);
+        } else {
+          output.innerText = data.response || data.answer || "No response received";
+        }
+
+      } catch (e) {
+        // ✅ backend returned HTML or plain text
+        output.innerText =
+          `❌ Backend returned non-JSON response (HTTP ${res.status})\n\n` + text;
+      }
+
+    } catch (err) {
+      output.innerText = "❌ Error connecting to backend";
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "WebSearch";
+    }
   }
 
-  output.innerText = "Thinking... 🤔";
-
-  try {
-    const res = await fetch("https://chat-backend-n8t7.onrender.com//api/websearch", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ prompt: question })
-    });
-
-    const data = await res.json();
-    output.innerText = data.response || "No response received";
-
-  } catch (err) {
-    output.innerText = "❌ Error connecting to backend";
-  }
-}
+  // ✅ Enter key submit
+  document.getElementById("question").addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      websearch();
+    }
+  });
 </script>
 
 </body>
