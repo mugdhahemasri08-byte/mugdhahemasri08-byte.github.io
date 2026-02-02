@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Web Q&A</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #bc8f8f;
+      --primary-light: #f4eaea;
+      --primary-soft: #ead7d7;
+      --text-dark: #2f2f2f;
+      --text-light: #6f6f6f;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary-soft));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 780px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 22px;
+      padding: 36px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: var(--primary);
+    }
+
+    .header p {
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    textarea {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid #ddd;
+      resize: none;
+      font-size: 14px;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 35px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), #a57878);
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(188,143,143,0.4);
+    }
+
+    .output {
+      margin-top: 25px;
+      background: var(--primary-light);
+      padding: 20px;
+      border-radius: 18px;
+      font-size: 14px;
+      white-space: pre-wrap;
+      min-height: 120px;
+      color: var(--text-dark);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .footer span {
+      color: var(--primary);
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+  <div class="header">
+    <h1>AI Web Q&A</h1>
+    <p>Ask questions powered by live web search</p>
+  </div>
+
+  <textarea
+    id="question"
+    rows="4"
+    placeholder="Ask anything... (e.g. How is RaajaSaab movie?)"
+  ></textarea>
+
+  <button onclick="websearch()">WebSearch</button>
+
+  <div class="output" id="output">
+    Answer will appear here ✨
+  </div>
+
+  <div class="footer">
+    Developed by <span>Hema Sri</span> • RAG AI System
+  </div>
+
+</div>
+
+<script>
+async function websearch() {
+  const question = document.getElementById("question").value.trim();
+  const output = document.getElementById("output");
+
+  if (!question) {
+    alert("Please enter a question");
+    return;
+  }
+
+  output.innerText = "Thinking... 🤔";
+
+  try {
+    const res = await fetch("http://localhost:5000/api/websearch", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt: question })
+    });
+
+    const data = await res.json();
+    output.innerText = data.response || "No response received";
+
+  } catch (err) {
+    output.innerText = "❌ Error connecting to backend";
+  }
+}
+</script>
+
+</body>
+</html>
