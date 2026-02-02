@@ -275,7 +275,7 @@ async function askImage() {
   fd.append("image", imageFile.files[0]);
   fd.append("question", imageQuestion.value);
 
-  const res = await fetch("http://localhost:5000/api/image-chat", {
+  const res = await fetch(API_URLS.IMAGE_CHAT, {
     method: "POST",
     body: fd
   });
@@ -299,7 +299,7 @@ async function askPDF() {
   fd.append("pdf", pdfFile.files[0]);
   fd.append("question", pdfQuestion.value);
 
-  const res = await fetch("http://localhost:5000/api/chat", {
+  const res = await fetch(API_URLS.PDF_CHAT, {
     method: "POST",
     body: fd
   });
@@ -307,6 +307,7 @@ async function askPDF() {
   pdfOutput.innerText = data.answer;
 }
 </script>
+<script src="config.js"></script>
 
 </body>
 </html>

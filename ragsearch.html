@@ -92,6 +92,11 @@
       box-shadow: 0 12px 25px rgba(188,143,143,0.4);
     }
 
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
     .output {
       margin-top: 25px;
       background: var(--primary-light);
@@ -130,10 +135,10 @@
   <textarea
     id="question"
     rows="4"
-    placeholder="This Rag is trained with 5 companies bse data. Ask me questions related to bse listed companies..."
+    placeholder="This RAG is trained with 5 BSE companies data. Ask questions related to BSE listed companies..."
   ></textarea>
 
-  <button id="searchBtn" onclick="websearch()">Ask</button>
+  <button id="searchBtn" onclick="ragSearch()">Ask</button>
 
   <div class="output" id="output">
     Answer will appear here ✨
@@ -145,11 +150,11 @@
 
 </div>
 
-<!-- ✅ IMPORTANT: Load config first -->
+<!-- ✅ Load config.js ONLY ONCE -->
 <script src="config.js"></script>
 
 <script>
-  async function websearch() {
+  async function ragSearch() {
     const question = document.getElementById("question").value.trim();
     const output = document.getElementById("output");
     const btn = document.getElementById("searchBtn");
@@ -164,21 +169,23 @@
     btn.innerText = "Searching...";
 
     try {
-      const res = await fetch(API_URLS.WEBSEARCH, {
+      // ✅ confirm API URL is present
+      if (!window.API_URLS || !API_URLS.RAGSEARCH) {
+        output.innerText = "❌ config.js missing or API_URLS.RAGSEARCH not defined";
+        return;
+      }
+
+      const res = await fetch(API_URLS.RAGSEARCH, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-
-        // ✅ send both keys to avoid backend mismatch
         body: JSON.stringify({
           prompt: question,
           question: question
         })
       });
 
-      // ✅ Always read raw text first
       const text = await res.text();
 
-      // ✅ Try parse JSON
       try {
         const data = JSON.parse(text);
 
@@ -187,11 +194,10 @@
             `❌ Backend Error (HTTP ${res.status})\n\n` +
             (data.error || data.message || text);
         } else {
-          output.innerText = data.response || data.answer || "No response received";
+          output.innerText = data.response || data.answer || "✅ No response received";
         }
 
-      } catch (e) {
-        // ✅ backend returned HTML or plain text
+      } catch {
         output.innerText =
           `❌ Backend returned non-JSON response (HTTP ${res.status})\n\n` + text;
       }
@@ -201,7 +207,7 @@
       console.error(err);
     } finally {
       btn.disabled = false;
-      btn.innerText = "WebSearch";
+      btn.innerText = "Ask";
     }
   }
 
@@ -209,7 +215,7 @@
   document.getElementById("question").addEventListener("keydown", function (e) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      websearch();
+      ragSearch();
     }
   });
 </script>
