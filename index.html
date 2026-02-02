@@ -26,6 +26,14 @@
       background:linear-gradient(180deg,#ffffff 0%,#fbf7f7 100%);
       color:#3b2f2f;
     }
+    .typewriter-wrap{
+      display:inline-block;
+      width: 18ch;
+    }
+    .typewriter{
+      white-space: nowrap;
+    }
+
 
     .navbar{background:#fff}
     .navbar-brand{font-weight:700}
@@ -214,7 +222,11 @@
       <div class="col-lg-7 reveal">
         <p class="eyebrow">AI · ML · Product</p>
         <h1>Hi, I'm <strong>Mugdha Hema Sri</strong><br>
-           <span class="typewriter"></span>
+           <!-- <span class="typewriter"></span> -->
+            <span class="typewriter-wrap">
+              <span class="typewriter"></span>
+            </span>
+
         </h1>
         <p class="lead mt-3">
           I build scalable, production-ready generative AI systems — from prompt
@@ -488,6 +500,9 @@ I specialize in Generative AI engineering with a strong focus on real-world depl
 <!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+
+
+
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -497,16 +512,24 @@ I specialize in Generative AI engineering with a strong focus on real-world depl
   },{threshold:.15});
   revealEls.forEach(el=>io.observe(el));
 
-  const typed=document.querySelector('.typewriter');
-  const words=['GenAI Engineer','Prompt Engineer','AI Product Builder'];
-  let w=0,c=0,f=true;
-  (function type(){
-    let word=words[w];
-    typed.textContent=word.slice(0,f?++c:--c);
-    if(c===word.length){f=false;setTimeout(type,1000);return}
-    if(c===0){f=true;w=(w+1)%words.length}
-    setTimeout(type,f?80:40);
-  })();
+const typed=document.querySelector('.typewriter');
+const words=['GenAI Engineer','Prompt Engineer','AI Product Builder'];
+
+// reserve width of longest word to stop layout jumping
+const longest = words.reduce((a,b)=> a.length>b.length ? a : b);
+typed.style.display = "inline-block";
+typed.style.minWidth = longest.length + "ch";
+typed.style.whiteSpace = "nowrap";
+
+let w=0,c=0,f=true;
+(function type(){
+  let word=words[w];
+  typed.textContent=word.slice(0,f?++c:--c);
+  if(c===word.length){f=false;setTimeout(type,1000);return}
+  if(c===0){f=true;w=(w+1)%words.length}
+  setTimeout(type,f?80:40);
+})();
+
 </script>
 
 <script>
