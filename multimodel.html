@@ -127,8 +127,7 @@
       margin-top: 15px;
     }
 
-    .preview img,
-    .preview video {
+    .preview img {
       max-width: 100%;
       max-height: 260px;
       border-radius: 16px;
@@ -204,7 +203,6 @@
   <div class="tabs">
     <div class="tab active" onclick="switchTab('image')">🖼 Image Q&A</div>
     <div class="tab" onclick="switchTab('pdf')">📄 PDF Q&A</div>
-    <div class="tab" onclick="switchTab('video')">🎥 Video Q&A</div>
   </div>
 
   <!-- IMAGE TAB -->
@@ -240,34 +238,6 @@
     <button onclick="askPDF()">Ask</button>
 
     <div class="output" id="pdfOutput">Answer will appear here ✨</div>
-  </div>
-
-  <!-- VIDEO TAB -->
-  <div class="content" id="video">
-    <div class="upload-section">
-      <label class="upload-label">
-        Upload Video
-        <input type="file" id="videoFile" accept="video/*">
-      </label>
-    </div>
-
-    <div class="upload-status" id="videoStatus">No video uploaded</div>
-
-    <input
-      type="text"
-      id="youtubeUrl"
-      placeholder="Paste YouTube video URL here..."
-      style="width:100%; margin-top:12px; padding:12px; border-radius:14px; border:1px solid #ddd; font-size:14px;"
-    />
-
-    <div class="preview" id="videoPreview"></div>
-
-    <textarea id="videoQuestion" placeholder="Ask a question about the video..."></textarea>
-
-    <button onclick="askVideo()">Ask from Uploaded Video</button>
-    <button onclick="askYouTube()">Ask from YouTube</button>
-
-    <div class="output" id="videoOutput">Answer will appear here ✨</div>
   </div>
 
   <div class="footer">
@@ -335,54 +305,6 @@ async function askPDF() {
   });
   const data = await res.json();
   pdfOutput.innerText = data.answer;
-}
-
-videoFile.onchange = () => {
-  const file = videoFile.files[0];
-  if (!file) return;
-
-  videoStatus.textContent = `✔ ${file.name}`;
-  videoStatus.classList.add("success");
-
-  const url = URL.createObjectURL(file);
-  videoPreview.innerHTML = `<video controls><source src="${url}"></video>`;
-};
-
-async function askVideo() {
-  if (!videoFile.files[0] || !videoQuestion.value)
-    return alert("Upload video and ask a question");
-
-  videoOutput.innerText = "Analyzing video...";
-  const fd = new FormData();
-  fd.append("video", videoFile.files[0]);
-  fd.append("question", videoQuestion.value);
-
-  const res = await fetch("http://localhost:5000/api/video-chat", {
-    method: "POST",
-    body: fd
-  });
-  const data = await res.json();
-  videoOutput.innerText = data.answer;
-}
-
-async function askYouTube() {
-  const youtubeUrl = document.getElementById("youtubeUrl").value;
-  const question = document.getElementById("videoQuestion").value;
-
-  if (!youtubeUrl || !question)
-    return alert("Paste YouTube URL and ask a question");
-
-  videoOutput.innerText = "Analyzing YouTube video...";
-  const fd = new FormData();
-  fd.append("youtube_url", youtubeUrl);
-  fd.append("question", question);
-
-  const res = await fetch("http://localhost:5000/api/youtube-chat", {
-    method: "POST",
-    body: fd
-  });
-  const data = await res.json();
-  videoOutput.innerText = data.answer;
 }
 </script>
 
