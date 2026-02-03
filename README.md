@@ -67,5 +67,4 @@ For collaborations and opportunities:
 - Location: Hyderabad
 - LinkedIn and GitHub are linked from the site footer.
 
----
-If you want a section added (metrics, screenshots, or a backend repo link), tell me what to include and I’ll update it.
+
