@@ -51,12 +51,14 @@
       margin: 0;
       font-size: 28px;
       color: var(--primary);
+      letter-spacing: 0.3px;
     }
 
     .header p {
-      margin-top: 6px;
+      margin-top: 8px;
       font-size: 14px;
       color: var(--text-light);
+      line-height: 1.5;
     }
 
     textarea {
@@ -67,16 +69,18 @@
       border: 1px solid #ddd;
       resize: none;
       font-size: 14px;
+      transition: 0.2s ease;
     }
 
     textarea:focus {
       outline: none;
       border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(188,143,143,0.25);
     }
 
     button {
       width: 100%;
-      margin-top: 20px;
+      margin-top: 18px;
       padding: 14px;
       border-radius: 35px;
       border: none;
@@ -85,140 +89,152 @@
       font-size: 15px;
       cursor: pointer;
       transition: 0.25s;
+      font-weight: 500;
     }
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 25px rgba(188,143,143,0.4);
+      box-shadow: 0 12px 25px rgba(188,143,143,0.35);
     }
 
     button:disabled {
       opacity: 0.7;
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     .output {
-      margin-top: 25px;
+      margin-top: 22px;
       background: var(--primary-light);
       padding: 20px;
       border-radius: 18px;
       font-size: 14px;
       white-space: pre-wrap;
-      min-height: 120px;
+      min-height: 140px;
       color: var(--text-dark);
       overflow-x: auto;
+      line-height: 1.6;
+      border: 1px solid rgba(0,0,0,0.05);
     }
 
     .footer {
       text-align: center;
-      margin-top: 25px;
+      margin-top: 22px;
       font-size: 12px;
       color: var(--text-light);
     }
 
     .footer span {
       color: var(--primary);
-      font-weight: 500;
+      font-weight: 600;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-light);
+      opacity: 0.95;
     }
   </style>
 </head>
 
 <body>
 
-<div class="app-container">
+  <div class="app-container">
 
-  <div class="header">
-    <h1>RAG SEARCH</h1>
-    <p>Ask questions powered by RAG (Retrieval-Augmented Generation) with BSE company data</p>
+    <div class="header">
+      <h1>RAG SEARCH</h1>
+      <p>
+        Ask questions powered by <b>RAG (Retrieval-Augmented Generation)</b><br />
+        using BSE Knowledge Base.
+      </p>
+      <div class="hint">
+        Example: <i>What is BSE?</i> • <i>What is Sensex?</i> • <i>How do companies list on BSE?</i>
+      </div>
+    </div>
+
+    <textarea id="question" rows="4" placeholder="Ask your question about BSE..."></textarea>
+
+    <button id="searchBtn" onclick="ragSearch()">Ask</button>
+
+    <div class="output" id="output">
+      Answer will appear here ✨
+    </div>
+
+    <div class="footer">
+      Developed by <span>Hema Sri</span> • RAG AI System
+    </div>
+
   </div>
 
-  <textarea
-    id="question"
-    rows="4"
-    placeholder="This RAG is trained with 5 BSE companies data. Ask questions related to BSE listed companies..."
-  ></textarea>
+  <!-- ✅ MUST load config.js first -->
+  <script src="config.js"></script>
 
-  <button id="searchBtn" onclick="ragSearch()">Ask</button>
+  <script>
+    async function ragSearch() {
+      const question = document.getElementById("question").value.trim();
+      const output = document.getElementById("output");
+      const btn = document.getElementById("searchBtn");
 
-  <div class="output" id="output">
-    Answer will appear here ✨
-  </div>
-
-  <div class="footer">
-    Developed by <span>Hema Sri</span> • RAG AI System
-  </div>
-
-</div>
-
-<!-- ✅ Load config.js ONLY ONCE -->
-<script src="config.js"></script>
-
-<script>
-  async function ragSearch() {
-    const question = document.getElementById("question").value.trim();
-    const output = document.getElementById("output");
-    const btn = document.getElementById("searchBtn");
-
-    if (!question) {
-      alert("Please enter a question");
-      return;
-    }
-
-    output.innerText = "Thinking... 🤔";
-    btn.disabled = true;
-    btn.innerText = "Searching...";
-
-    try {
-      // ✅ confirm API URL is present
-      if (!window.API_URLS || !API_URLS.RAGSEARCH) {
-        output.innerText = "❌ config.js missing or API_URLS.RAGSEARCH not defined";
+      if (!question) {
+        alert("Please enter a question");
         return;
       }
 
-      const res = await fetch(API_URLS.RAGSEARCH, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt: question,
-          question: question
-        })
-      });
+      // ✅ Make sure config is loaded
+      if (typeof API_URLS === "undefined" || !API_URLS.RAGSEARCH) {
+        output.innerText = "❌ config.js not loaded or API_URLS.RAGSEARCH missing";
+        return;
+      }
 
-      const text = await res.text();
+      output.innerText = "Thinking... 🤔";
+      btn.disabled = true;
+      btn.innerText = "Searching...";
 
       try {
-        const data = JSON.parse(text);
+        const res = await fetch(API_URLS.RAGSEARCH, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: question })   // ✅ curl-compatible
+        });
+
+        const data = await res.json().catch(() => null);
 
         if (!res.ok) {
           output.innerText =
             `❌ Backend Error (HTTP ${res.status})\n\n` +
-            (data.error || data.message || text);
-        } else {
-          output.innerText = data.response || data.answer || "✅ No response received";
+            (data?.response || data?.error || data?.message || "Unknown error");
+          return;
         }
 
-      } catch {
-        output.innerText =
-          `❌ Backend returned non-JSON response (HTTP ${res.status})\n\n` + text;
+        const answer = data?.response || "✅ No response received";
+
+        // ✅ show sources if backend sends sources
+        let sourcesText = "";
+        if (Array.isArray(data?.sources) && data.sources.length > 0) {
+          sourcesText = "\n\n📌 Sources:\n- " + data.sources.join("\n- ");
+        }
+
+        output.innerText = answer + sourcesText;
+
+      } catch (err) {
+        console.error(err);
+        output.innerText = "❌ Error connecting to backend. Please check server & CORS.";
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Ask";
       }
-
-    } catch (err) {
-      output.innerText = "❌ Error connecting to backend";
-      console.error(err);
-    } finally {
-      btn.disabled = false;
-      btn.innerText = "Ask";
     }
-  }
 
-  // ✅ Enter key submit
-  document.getElementById("question").addEventListener("keydown", function (e) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      ragSearch();
-    }
-  });
-</script>
+    // ✅ Enter submits (Shift+Enter for new line)
+    document.getElementById("question").addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        ragSearch();
+      }
+    });
+  </script>
 
 </body>
 </html>
