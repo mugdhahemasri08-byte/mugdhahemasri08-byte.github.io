@@ -2,7 +2,7 @@ name: Keep Render Ask API Alive
 
 on:
   schedule:
-    - cron: "*/15 * * * *"   # runs every 15 minutes
+    - cron: "*/10 * * * *"   # runs every 10 minutes
   workflow_dispatch:
 
 jobs:
@@ -12,6 +12,13 @@ jobs:
     steps:
       - name: Ping Ask API
         run: |
-          curl -X POST https://chat-backend-n8t7.onrender.com/api/ask \
-          -H "Content-Type: application/json" \
-          -d '{"prompt":"health check"}'
+          echo "Pinging Render Ask API..."
+
+          curl --retry 5 \
+               --retry-delay 5 \
+               --max-time 30 \
+               -X POST https://chat-backend-n8t7.onrender.com/api/ask \
+               -H "Content-Type: application/json" \
+               -d '{"prompt":"health check"}'
+
+          echo "Ping completed"
