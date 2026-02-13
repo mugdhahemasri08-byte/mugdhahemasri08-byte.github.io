@@ -272,6 +272,82 @@
   font-weight: 500;
 }
 
+    .experience-shell{
+      position:relative;
+      max-width:980px;
+      margin:0 auto;
+    }
+    .experience-shell::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      top:0;
+      bottom:0;
+      width:2px;
+      background:linear-gradient(180deg,var(--accent) 0%,rgba(188,143,143,.2) 100%);
+    }
+    .xp-card{
+      position:relative;
+      margin-left:52px;
+      background:linear-gradient(135deg,#ffffff 0%,#fff8f8 100%);
+      border:1px solid rgba(188,143,143,.2);
+      border-radius:18px;
+      padding:1.3rem 1.35rem;
+      box-shadow:var(--card-shadow);
+    }
+    .xp-card::before{
+      content:"";
+      position:absolute;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      left:-40px;
+      top:1.5rem;
+      background:var(--accent-dark);
+      box-shadow:0 0 0 5px rgba(188,143,143,.18);
+    }
+    .xp-role{
+      font-weight:700;
+      margin:0;
+    }
+    .xp-company{
+      color:var(--accent-dark);
+      font-weight:600;
+      margin:0;
+    }
+    .xp-date{
+      display:inline-block;
+      font-size:.8rem;
+      font-weight:600;
+      color:var(--muted);
+      background:#fff;
+      border:1px solid rgba(167,116,116,.28);
+      border-radius:999px;
+      padding:.28rem .72rem;
+    }
+    .xp-list{
+      margin:.9rem 0 0 1rem;
+      color:#5b4c4c;
+    }
+    .xp-list li{
+      margin-bottom:.5rem;
+    }
+    .xp-list li:last-child{
+      margin-bottom:0;
+    }
+    @media(max-width:767px){
+      .experience-shell::before{
+        left:12px;
+      }
+      .xp-card{
+        margin-left:36px;
+        padding:1.1rem;
+      }
+      .xp-card::before{
+        left:-30px;
+      }
+    }
+
   </style>
 </head>
 
@@ -289,6 +365,7 @@
         <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
         <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+        <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
         <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         <li class="nav-item"><a class="nav-link" href="ABRAPURI%20MUGDHA%20HEMA%20SRI.pdf" target="_blank" rel="noopener">Resume</a></li>
@@ -455,6 +532,63 @@ I specialize in Generative AI engineering with a strong focus on real-world depl
 <span class="badge bg-light border badge-black">Flask</span>
 <span class="badge bg-light border badge-black">AWS / AZURE</span>
 
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="text-center mb-4 reveal">
+      <h3 class="mb-2">My Journey at <p class="xp-company">Infosys</p></h3>
+      <!-- <p class="text-muted mb-0">Building AI systems at scale across roles at Infosys.</p> -->
+    </div>
+    <div class="experience-shell">
+      <div class="xp-card reveal mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-2">
+          <div>
+            <!-- <p class="xp-company">Infosys</p> -->
+            <h5 class="xp-role">Senior Systems Engineer</h5>
+          </div>
+          <span class="xp-date">March 2024 - Present</span>
+        </div>
+        <ul class="xp-list">
+          <li><strong>Impact:</strong> Delivered a production-ready RAG assistant for enterprise data and metadata discovery, enabling faster internal knowledge access.</li>
+          <li><strong>Architecture Ownership:</strong> Designed the complete pipeline from API ingestion and document processing to retrieval and response orchestration.</li>
+          <li><strong>AI Workflow:</strong> Implemented standalone query generation, query categorization, and final response generation on OpenSearch-backed retrieval.</li>
+          <li><strong>LLM Quality:</strong> Introduced a feedback loop to improve response relevance and user experience over continuous iterations.</li>
+          <li><strong>Stack:</strong> AWS S3, Amazon Textract, OpenSearch Service, LangChain, Amazon Titan embeddings, PostgreSQL.</li>
+        </ul>
+      </div>
+
+      <div class="xp-card reveal mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-2">
+          <div>
+            <!-- <p class="xp-company">Infosys</p> -->
+            <h5 class="xp-role">Systems Engineer</h5>
+          </div>
+          <span class="xp-date">March 2023 - March 2024</span>
+        </div>
+        <ul class="xp-list">
+          <li><strong>Impact:</strong> Built LLM-powered assistants for internal workflows and generative content use cases across business teams.</li>
+          <li><strong>Implementation:</strong> Developed reusable prompt frameworks with few-shot patterns and structured reasoning flows.</li>
+          <li><strong>Focus:</strong> Reduced experimentation time by standardizing prompt design and response behavior across use cases.</li>
+        </ul>
+      </div>
+
+      <div class="xp-card reveal">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-2">
+          <div>
+            <!-- <p class="xp-company">Infosys</p> -->
+            <h5 class="xp-role">Trainee</h5>
+          </div>
+          <span class="xp-date">October 2022 - March 2023</span>
+        </div>
+        <ul class="xp-list">
+          <li><strong>Foundation:</strong> Developed an early generative AI chatbot for customer-support scenarios.</li>
+          <li><strong>Learning Curve:</strong> Built core skills in conversational design, prompt tuning, and response quality evaluation.</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
