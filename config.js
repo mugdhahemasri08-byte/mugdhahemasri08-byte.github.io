@@ -7,13 +7,13 @@ const ENV = "PROD";   // "LOCAL" or "PROD"
 // APIs
 const CONFIG = {
   LOCAL: {
-    WEBSEARCH: "http://127.0.0.1:5000/api/websearch",
-    RAGSEARCH: "http://127.0.0.1:5000/api/ragsearch",   // ✅ Added
-    ASK: "http://127.0.0.1:5000/api/ask",
+    WEBSEARCH: "http://127.0.0.1:5001/api/websearch",
+    RAGSEARCH: "http://127.0.0.1:5001/api/ragsearch",   // ✅ Added
+    ASK: "http://127.0.0.1:5001/api/ask",
 
     // ✅ NEW
-    PDF_CHAT: "http://127.0.0.1:5000/api/chat",
-    IMAGE_CHAT: "http://127.0.0.1:5000/api/image-chat"
+    PDF_CHAT: "http://127.0.0.1:5001/api/chat",
+    IMAGE_CHAT: "http://127.0.0.1:5001/api/image-chat"
   },
 
   PROD: {
